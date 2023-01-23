@@ -85,7 +85,7 @@ fun mainCard(cardContent: String, cardAuthor: String) {
                 fontFamily = poppinsFamily
             )
             Text(
-                text = "\n" + "-" + cardAuthor,
+                text = "\n -" + cardAuthor,
                 modifier = Modifier.padding(5.dp),
                 fontFamily = poppinsFamily,
                 style = MaterialTheme.typography.body2,
