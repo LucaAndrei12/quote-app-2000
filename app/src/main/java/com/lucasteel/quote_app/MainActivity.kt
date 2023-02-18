@@ -22,6 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.lucasteel.quote_app.ui.theme.QuoteappTheme
 import com.lucasteel.quote_app.backend.ApiHandler
 import com.lucasteel.quote_app.ui.theme.Typography
@@ -36,33 +40,56 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             apihandle.updateQuote()
-            //  apihandle.updateColor()
 
             QuoteappTheme {
-                mainScreen()
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }
 }
 
 @Composable
-fun mainScreen() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.surface
-    ) {
+fun mainScreen(navController: NavController) {
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            mainCard(cardContent = model.quoteInfo, cardAuthor = model.authorInfo)
-            mainButton()
-            shareTextButton()
+    Scaffold(bottomBar ={ bottomNavigator(navController = navController) },
+        content ={
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.surface
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    mainCard(cardContent = model.quoteInfo, cardAuthor = model.authorInfo)
+                    mainButton()
+                    shareTextButton()
+                }
+
+            }
+        })
+
         }
 
+    /*
+    Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.surface
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                mainCard(cardContent = model.quoteInfo, cardAuthor = model.authorInfo)
+                mainButton()
+                shareTextButton()
+            }
+
+        }
     }
-}
+    */
+
 
 @Composable
 fun mainCard(cardContent: String, cardAuthor: String) {
@@ -137,6 +164,6 @@ fun shareTextButton() {
 @Composable
 fun DefaultPreview() {
     QuoteappTheme {
-        mainScreen()
+       // mainScreen()
     }
 }
