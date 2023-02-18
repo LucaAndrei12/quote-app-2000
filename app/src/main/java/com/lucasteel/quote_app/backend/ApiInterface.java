@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    @GET("random?maxLength=170")
+    @GET("random?maxLength=120")
     Call<ResponseBody> getData();
 
 }

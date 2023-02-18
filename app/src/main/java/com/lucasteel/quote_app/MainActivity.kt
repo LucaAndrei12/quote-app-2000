@@ -72,24 +72,6 @@ fun mainScreen(navController: NavController) {
 
         }
 
-    /*
-    Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.surface
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                mainCard(cardContent = model.quoteInfo, cardAuthor = model.authorInfo)
-                mainButton()
-                shareTextButton()
-            }
-
-        }
-    }
-    */
-
 
 @Composable
 fun mainCard(cardContent: String, cardAuthor: String) {
