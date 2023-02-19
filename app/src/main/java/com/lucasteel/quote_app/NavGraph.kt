@@ -31,11 +31,11 @@ fun NavGraph (navController: NavHostController)
         }
         composable(route = Screens.FavScreen.route)
         {
-            favsScreen()
+            favsScreen(navController)
         }
         composable(route = Screens.InfoScreen.route)
         {
-            infoScreen()
+            infoScreen(navController)
         }
     }
 }

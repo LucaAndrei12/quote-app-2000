@@ -8,19 +8,19 @@ import androidx.compose.runtime.Composable
 
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = SecondaryDark,
-    secondary = SecondaryDark,
-    background = LightGrey,
-    surface = DarkGrey
+    primary = PrimaryDark, //bottom navigation
+    primaryVariant = PrimaryVariantDark, //buttons
+    secondary = SecondaryDark, //card color
+    background = BackgroundDark,
+    surface = SurfaceDark //background
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple200,
-    primaryVariant = SecondaryLight,
-    secondary = SecondaryLight,
-    background = LightWhite,
-    surface = DarkWhite
+    primary = PrimaryLight, //bottom navigation
+    primaryVariant = PrimaryVariantLight, //buttons
+    secondary = SecondaryLight, //card color
+    background = BackgroundLight,
+    surface = SurfaceLight  //background
 
     /* Other default colors to override
     background = Color.White,
@@ -31,8 +31,6 @@ private val LightColorPalette = lightColors(
     onSurface = Color.Black,
     */
 )
-
-
 
 @Composable
 fun QuoteappTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

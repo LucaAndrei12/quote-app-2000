@@ -1,6 +1,5 @@
 package com.lucasteel.quote_app
 
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -10,12 +9,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.lucasteel.quote_app.ui.theme.SecondaryLight
 
 @Composable
 fun bottomNavigator(navController: NavController) {
     val backStackEntry = navController.currentBackStackEntryAsState()
 
-    NavigationBar(containerColor = MaterialTheme.colors.primary, modifier = Modifier.height(80.dp))
+    NavigationBar(containerColor = MaterialTheme.colors.primary, contentColor = SecondaryLight)
     {
         routeList.forEach { item ->
             val selected = item.route == backStackEntry.value?.destination?.route

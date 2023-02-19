@@ -1,7 +1,6 @@
 package com.lucasteel.quote_app
 
 import android.content.Intent
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,14 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lucasteel.quote_app.ui.theme.QuoteappTheme
-import com.lucasteel.quote_app.backend.ApiHandler
-import com.lucasteel.quote_app.ui.theme.Typography
 import com.lucasteel.quote_app.ui.theme.poppinsFamily
-import java.lang.Long.parseLong
 
 val model = MainViewModel()
 
@@ -52,8 +46,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun mainScreen(navController: NavController) {
 
-    Scaffold(bottomBar ={ bottomNavigator(navController = navController) },
-        content ={
+    Scaffold(bottomBar = { bottomNavigator(navController = navController) },
+        content = {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.surface
@@ -63,14 +57,16 @@ fun mainScreen(navController: NavController) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     mainCard(cardContent = model.quoteInfo, cardAuthor = model.authorInfo)
-                    mainButton()
-                    shareTextButton()
+                    Row {
+                        mainButton()
+                        shareTextButton()
+                    }
                 }
 
             }
         })
 
-        }
+}
 
 
 @Composable
@@ -80,7 +76,7 @@ fun mainCard(cardContent: String, cardAuthor: String) {
             .padding(10.dp)
             .wrapContentHeight()
             .width(1000.dp),
-        backgroundColor = Color(0xffDAECEC),
+        backgroundColor = MaterialTheme.colors.secondary,
         elevation = 15.dp,
         shape = RoundedCornerShape(10.dp)
     )
@@ -107,10 +103,10 @@ fun mainCard(cardContent: String, cardAuthor: String) {
 
 @Composable
 fun mainButton() {
-    Button(onClick = { model.refreshStates() }, modifier = Modifier.padding(10.dp)) {
+    Button(onClick = { model.refreshStates() }, modifier = Modifier.padding(10.dp), colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant)) {
         Icon(imageVector = Icons.Rounded.Refresh, contentDescription = "refresh button")
         Text(
-            text = "Get another one!",
+            text = "Get another!",
             Modifier.padding(start = 5.dp),
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Medium,
@@ -121,19 +117,24 @@ fun mainButton() {
 
 @Composable
 fun shareTextButton() {
-    val shareText = "\"" + model.quoteInfo + "\"" + "\n -" + model.authorInfo + "\n This quote has been found via Luca's quote app."
+    val shareText =
+        "\"" + model.quoteInfo + "\"" + "\n -" + model.authorInfo + "\n This quote has been found via Luca's quote app."
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)
         type = "text/plain"
     }
-    val shareIntent = Intent.createChooser(sendIntent, null)
+    val shareIntent = Intent.createChooser(sendIntent, "Share quote")
     val context = LocalContext.current
 
-    Button(onClick = { context.startActivity(shareIntent) }) {
+    Button(
+        onClick = { context.startActivity(shareIntent) },
+        modifier = Modifier.padding(10.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant)
+    ) {
         Icon(imageVector = Icons.Default.Share, contentDescription = "share button")
         Text(
-            text = "Share this quote!",
+            text = "Share this!",
             Modifier.padding(start = 5.dp),
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Medium,
@@ -146,6 +147,6 @@ fun shareTextButton() {
 @Composable
 fun DefaultPreview() {
     QuoteappTheme {
-       // mainScreen()
+        mainScreen(rememberNavController())
     }
 }
