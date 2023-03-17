@@ -28,8 +28,8 @@ public class ApiHandler {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                  try {
-                     MainActivityKt.getModel().setQuoteInfo(jsonfromatter.formatJSON(response.body().string(), "quote").get(0));
-                     MainActivityKt.getModel().setAuthorInfo(jsonfromatter.result.get(1));
+                     MainActivityKt.getMainViewModel().setQuoteInfo(jsonfromatter.formatJSON(response.body().string(), "quote").get(0));
+                     MainActivityKt.getMainViewModel().setAuthorInfo(jsonfromatter.result.get(1));
                } catch (IOException e)
                 {
                     e.printStackTrace();
@@ -53,7 +53,7 @@ public class ApiHandler {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    MainActivityKt.getModel().setColorInfo(new JSONConverter().formatJSON(response.body().string(), "color").get(0));
+                    MainActivityKt.getMainViewModel().setColorInfo(new JSONConverter().formatJSON(response.body().string(), "color").get(0));
 
                 } catch (IOException e)
                 {
