@@ -1,5 +1,6 @@
 package com.lucasteel.quote_app
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +25,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.lucasteel.quote_app.backend.IOSaver
 import com.lucasteel.quote_app.ui.theme.QuoteappTheme
 import com.lucasteel.quote_app.ui.theme.poppinsFamily
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import com.google.accompanist.navigation.animation.navigation
+import com.google.accompanist.navigation.animation.composable
 
 val mainViewModel = MainViewModel()
 
@@ -36,7 +47,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             mainViewModel.refreshStates()
-
+            val quoteFile = File(LocalContext.current.filesDir, "quotes-file")
+            IOSaver().getFavs(quoteFile)?.forEach{ i ->
+              if(!favsViewModel.favsList.contains(i))  favsViewModel.favsList.add(i)
+            }
             QuoteappTheme {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
@@ -49,9 +63,9 @@ class MainActivity : ComponentActivity() {
 fun mainScreen(navController: NavController) {
 
     Scaffold(bottomBar = { bottomNavigator(navController = navController) },
-        content = {
+        content = { padding ->
             Surface(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(padding),
                 color = MaterialTheme.colors.surface
             ) {
                 Column(
@@ -64,10 +78,8 @@ fun mainScreen(navController: NavController) {
                         shareTextButton()
                     }
                 }
-
             }
         })
-
 }
 
 
@@ -92,7 +104,7 @@ fun mainCard(cardContent: String, cardAuthor: String) {
                     modifier = Modifier
                         .padding(10.dp)
                         .size(40.dp)
-                        .clickable { mainViewModel.isLiked = !mainViewModel.isLiked }
+                        .clickable { mainViewModel.isLiked = !mainViewModel.isLiked;}
                 )
             }
             AnimatedContent(targetState = cardContent) { targetCardContent ->
@@ -121,8 +133,9 @@ fun mainCard(cardContent: String, cardAuthor: String) {
 
 @Composable
 fun mainButton() {
+    val contextForSave = LocalContext.current
     Button(
-        onClick = {refreshButtonAction() },
+        onClick = { refreshButtonAction(); IOSaver().saveFavs(favsViewModel.favsList, File(contextForSave.filesDir, "quotes-file"))},
         modifier = Modifier.padding(10.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant)
     ) {

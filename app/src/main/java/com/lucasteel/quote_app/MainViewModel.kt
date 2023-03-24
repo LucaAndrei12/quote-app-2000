@@ -19,11 +19,7 @@ class MainViewModel: ViewModel() {
 
     fun refreshStates()
     {
-       // if(isLiked == true)
-       //  {
-       //       var formattedCompressedQuote = quoteInfo + " " + authorInfo
-       //       favsViewModel.favsList.add(formattedCompressedQuote)
-       // }
+
         isLiked = false
         viewModelScope.launch(Dispatchers.IO) {
             ApiHandler().updateQuote()
